@@ -6,6 +6,33 @@
 #include "debug.h"
 
 /*
+This C code is designed to interface Java code with a native library for managing RS-232 (serial) communication, specifically for a module or device referred to as "M2G".
+It uses the Java Native Interface (JNI) to allow Java applications to call these native methods. Here's a breakdown of its functionality:
+
+1. Connect (Java_datasignals_m2g_M2G_connect): This function establishes a connection to a serial port specified by the port parameter. The async parameter determines
+whether the connection should be asynchronous. It uses the m2g_connect function (presumably from the m2g.h library) to perform the actual connection and returns a descriptor
+(an integer) that represents the connection.
+
+2. Disconnect (Java_datasignals_m2g_M2G_disconnect): This function disconnects a previously established connection, identified by the descriptor desc. It calls m2g_disconnect
+to perform the disconnection.
+
+3. Write (Java_datasignals_m2g_M2G_write): This function writes data to the serial port. The data to be written is passed as a byte array (buf), with pos indicating the start
+position in the array and length specifying how many bytes to write. It uses the write system call to send the data and returns the number of bytes actually written.
+
+4. Read (Java_datasignals_m2g_M2G_read): This function reads data from the serial port into a byte array (buf). The parameters pos and length determine where in the array to store
+the read data and how much data to attempt to read, respectively. It uses the read system call to receive the data and returns the number of bytes actually read.
+
+5. Byte Count (Java_datasignals_m2g_M2G_byteCount): This function checks how many bytes are available to be read from the serial port without blocking. It calls m2g_bytes_available
+to get this information and returns the count.
+
+Throughout the code, there are conditional debug print statements (#ifdef DEBUG) that output diagnostic information to the console if the DEBUG macro is defined. This can be useful
+for development and troubleshooting.
+
+The JNI functions (GetStringUTFChars, ReleaseStringUTFChars, GetPrimitiveArrayCritical, ReleasePrimitiveArrayCritical) are used to handle conversion and memory management
+between Java objects and native types.
+*/
+
+/*
  * Class:      datasignals_m2g_M2G
  * Method:     connect
  * Signature:  (Ljava/lang/String;Z)I

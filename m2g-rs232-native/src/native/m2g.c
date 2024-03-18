@@ -9,6 +9,30 @@
 #include "m2g.h"
 #include "debug.h"
 
+/*
+This C library program is designed to manage serial port connections on Unix-like systems, specifically for configuring and handling
+a connection to a device via RS-232 (a standard for serial communication). Here's a breakdown of its functionality:
+
+1. Opening and Closing Connections: It provides functions to open (m2g_connect) and close (m2g_disconnect) connections to a serial port.
+The m2g_connect function opens a serial port specified by the port parameter (e.g., /dev/ttyS0 for Linux) and configures it for either
+synchronous or asynchronous communication based on the async parameter. If the connection and configuration are successful, it returns a
+file descriptor for the opened serial port; otherwise, it returns -1 to indicate an error.
+
+2. Configuring Connection Parameters: The set_connection_param function configures various parameters of the serial port connection such
+as baud rate (set to 9600 bps with cfsetispeed and cfsetospeed), character size (8 bits per character), and disables parity checking,
+hardware flow control, and several input/output modes that are not needed for basic serial communication. It also configures whether the
+read operation should be blocking or non-blocking based on the async parameter.
+
+3. Checking Available Bytes: The m2g_bytes_available function checks how many bytes are available to be read from the serial port without
+blocking, using the ioctl system call with the FIONREAD command.
+
+The program includes conditional compilation directives (#ifdef DEBUG) to include debug output statements when the DEBUG macro is defined,
+aiding in debugging and development by printing out useful information about the connection and configuration process.
+
+Overall, this program is a utility for establishing and managing low-level serial port communications, providing basic functionality
+needed for sending and receiving data over RS-232 connections in a controlled, configurable manner.
+*/
+
 int set_connection_param(int fd, const bool async) {
 
     struct termios options;
